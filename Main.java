@@ -9,52 +9,126 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Material> list = new ArrayList<>();
 
-        Material flour1 = new CrispyFlour("12","fl1", LocalDate.of(2022,12, 10),135,5.5);
-        Material flour2 = new CrispyFlour("15","fl2", LocalDate.of(2023,1, 25),128,7);
-        Material flour3 = new CrispyFlour("22","fl3", LocalDate.of(2023,2, 12),80,15);
-        Material flour4 = new CrispyFlour("18","fl4", LocalDate.of(2023,5, 25),100,10);
-        Material flour5 = new CrispyFlour("25","fl5", LocalDate.of(2023,10, 28),95,8);
-
-        Material meat1 = new Meat("50","m1",LocalDate.of(2023, 12, 15), 135,5);
-        Material meat2 = new Meat("52","m2",LocalDate.of(2023, 12, 18), 120,8);
-        Material meat3 = new Meat("55","m3",LocalDate.of(2023, 12, 20), 130,10);
-        Material meat4 = new Meat("56","m4",LocalDate.of(2023, 12, 21), 125,20);
-        Material meat5 = new Meat("58","m5",LocalDate.of(2023, 12, 14), 122,18);
-
-        list.add(flour1);
-        list.add(flour2);
-        list.add(flour3);
-        list.add(flour4);
-        list.add(flour5);
-        list.add(meat1);
-        list.add(meat2);
-        list.add(meat3);
-        list.add(meat4);
-        list.add(meat5);
+//        Material flour1 = new CrispyFlour("12","fl1", LocalDate.of(2022,12, 10),135,5.5);
+//        Material flour2 = new CrispyFlour("15","fl2", LocalDate.of(2023,1, 25),128,7);
+//        Material flour3 = new CrispyFlour("22","fl3", LocalDate.of(2023,2, 12),80,15);
+//        Material flour4 = new CrispyFlour("18","fl4", LocalDate.of(2023,5, 25),100,10);
+//        Material flour5 = new CrispyFlour("25","fl5", LocalDate.of(2023,10, 28),95,8);
+//
+//        Material meat1 = new Meat("50","m1",LocalDate.of(2023, 12, 15), 135,5);
+//        Material meat2 = new Meat("52","m2",LocalDate.of(2023, 12, 18), 120,8);
+//        Material meat3 = new Meat("55","m3",LocalDate.of(2023, 12, 20), 130,10);
+//        Material meat4 = new Meat("56","m4",LocalDate.of(2023, 12, 21), 125,20);
+//        Material meat5 = new Meat("58","m5",LocalDate.of(2023, 12, 14), 122,18);
+//
+//        list.add(flour1);
+//        list.add(flour2);
+//        list.add(flour3);
+//        list.add(flour4);
+//        list.add(flour5);
+//        list.add(meat1);
+//        list.add(meat2);
+//        list.add(meat3);
+//        list.add(meat4);
+//        list.add(meat5);
 
         int choice = -1;
-        Scanner sc = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         while (choice != 0){
             System.out.println("------------------------------------------------------------------");
             System.out.println("MENU");
-            System.out.println("1. Tinh tong tien vat lieu");
-            System.out.println("2. Sap xep vat lieu theo gia");
-            System.out.println("3. Chenh lech giua chiet khau va khong chiet khau ngay hom nay");
+            System.out.println("1. Them vat lieu vao danh sach");
+            System.out.println("2. Sua vat lieu trong danh sach");
+            System.out.println("3. Xoa vat lieu theo ma");
+            System.out.println("4. Hien thi danh sach vat lieu hien co");
+            System.out.println("5. Tinh tong tien vat lieu");
+            System.out.println("6. Sap xep vat lieu theo gia");
+            System.out.println("7. Chenh lech giua chiet khau va khong chiet khau ngay hom nay");
             System.out.println("0. Exit");
             System.out.print("NHAP LUA CHON CUA BAN: ");
-            choice = sc.nextInt();
+            choice = in.nextInt();
 
             switch (choice){
                 case 1:
-                    System.out.print("Tong tien cac vat lieu la: ");
-                    System.out.printf("%.3f \n",getSumCostApplyDiscount(list));
+                    System.out.print("Nhap vat lieu can them  <F> flour hay <M> meat: ");
+                    Scanner sc = new Scanner(System.in);
+                    String input = sc.nextLine();
+                    if (input.equals("F")){
+                        System.out.print("Nhap ma vat lieu: ");
+                        String id = sc.nextLine();
+                        System.out.print("Nhap ten vat lieu: ");
+                        String name = sc.nextLine();
+                        System.out.print("Nhap ngay san xuat: ");
+                        int day = sc.nextInt();
+                        System.out.print("Nhap thang san xuat: ");
+                        int month = sc.nextInt();
+                        System.out.print("Nhap nam san xuat: ");
+                        int year = sc.nextInt();
+                        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
+                        System.out.print("Nhap gia vat lieu(VND): ");
+                        int cost = sc.nextInt();
+                        System.out.print("Nhap so luong(kg): ");
+                        double quantity = sc.nextDouble();
+
+                        Material m = new CrispyFlour(id, name, manufacturingDate, cost, quantity);
+                        list.add(m);
+                    } else if (input.equals("M")){
+                        System.out.print("Nhap ma vat lieu: ");
+                        String id = sc.nextLine();
+                        System.out.print("Nhap ten vat lieu: ");
+                        String name = sc.nextLine();
+                        System.out.print("Nhap ngay san xuat: ");
+                        int day = sc.nextInt();
+                        System.out.print("Nhap thang san xuat: ");
+                        int month = sc.nextInt();
+                        System.out.print("Nhap nam san xuat: ");
+                        int year = sc.nextInt();
+                        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
+                        System.out.print("Nhap gia vat lieu(VND): ");
+                        int cost = sc.nextInt();
+                        System.out.print("Nhap so luong(kg): ");
+                        double weight = sc.nextDouble();
+
+                        Material m = new Meat(id, name, manufacturingDate, cost, weight);
+                        list.add(m);
+                    }else {
+                        System.out.println("Nhap sai. Moi nhap lai");
+                        break;
+                    }
                     break;
                 case 2:
+                    System.out.print("Danh sach vat lie hien co: ");
+                    showList(list);
+                    break;
+                case 3:
+                    System.out.print("Nhap ma vat lieu can xoa: ");
+                    Scanner sc3 = new Scanner(System.in);
+                    String id = sc3.nextLine();
+                    for (Material m: list){
+                        if (m.getId().equals(id)){
+                            boolean isRemoved = list.remove(m);
+                            if (isRemoved){
+                                System.out.println("xoa thanh cong!");
+                            } else {
+                                System.out.println("Chua xoa duoc!");
+                            }
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.println("Danh sach vat lie hien co: ");
+                    showList(list);
+                    break;
+                case 5:
+                    System.out.print("Tong tien cac vat lieu da gom chiet khau la: ");
+                    System.out.printf("%.3f \n",getSumCostApplyDiscount(list));
+                    break;
+                case 6:
                     System.out.println("Sap xep vat lieu theo gia ");
                     arrangeListByCost(list);
                     showList(list);
                     break;
-                case 3:
+                case 7:
                     System.out.printf("%-50s%15.3f\n","Tong tien vat lieu khong tinh chiet khau hom nay: ",getSumCostNoDiscount(list));
                     System.out.printf("%-50s%15.3f\n","Tong tien vat lieu co chiet khau hom nay: ",getSumCostApplyDiscount(list));
                     System.out.printf("%-50s%15.3f\n","Chenh lech: ",getSumCostNoDiscount(list)-getSumCostApplyDiscount(list));

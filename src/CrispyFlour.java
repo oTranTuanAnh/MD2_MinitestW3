@@ -21,6 +21,14 @@ public class CrispyFlour extends Material implements Discount{
         this.quantity = quantity;
     }
 
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "CrispyFlour{" +

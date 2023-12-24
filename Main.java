@@ -8,32 +8,9 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Material> list = new ArrayList<>();
-
-//        Material flour1 = new CrispyFlour("12","fl1", LocalDate.of(2022,12, 10),135,5.5);
-//        Material flour2 = new CrispyFlour("15","fl2", LocalDate.of(2023,1, 25),128,7);
-//        Material flour3 = new CrispyFlour("22","fl3", LocalDate.of(2023,2, 12),80,15);
-//        Material flour4 = new CrispyFlour("18","fl4", LocalDate.of(2023,5, 25),100,10);
-//        Material flour5 = new CrispyFlour("25","fl5", LocalDate.of(2023,10, 28),95,8);
-//
-//        Material meat1 = new Meat("50","m1",LocalDate.of(2023, 12, 15), 135,5);
-//        Material meat2 = new Meat("52","m2",LocalDate.of(2023, 12, 18), 120,8);
-//        Material meat3 = new Meat("55","m3",LocalDate.of(2023, 12, 20), 130,10);
-//        Material meat4 = new Meat("56","m4",LocalDate.of(2023, 12, 21), 125,20);
-//        Material meat5 = new Meat("58","m5",LocalDate.of(2023, 12, 14), 122,18);
-//
-//        list.add(flour1);
-//        list.add(flour2);
-//        list.add(flour3);
-//        list.add(flour4);
-//        list.add(flour5);
-//        list.add(meat1);
-//        list.add(meat2);
-//        list.add(meat3);
-//        list.add(meat4);
-//        list.add(meat5);
-
         int choice = -1;
         Scanner in = new Scanner(System.in);
+
         while (choice != 0){
             System.out.println("------------------------------------------------------------------");
             System.out.println("MENU");
@@ -54,42 +31,16 @@ public class Main {
                     Scanner sc = new Scanner(System.in);
                     String input = sc.nextLine();
                     if (input.equals("F")){
-                        System.out.print("Nhap ma vat lieu: ");
-                        String id = sc.nextLine();
-                        System.out.print("Nhap ten vat lieu: ");
-                        String name = sc.nextLine();
-                        System.out.print("Nhap ngay san xuat: ");
-                        int day = sc.nextInt();
-                        System.out.print("Nhap thang san xuat: ");
-                        int month = sc.nextInt();
-                        System.out.print("Nhap nam san xuat: ");
-                        int year = sc.nextInt();
-                        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
-                        System.out.print("Nhap gia vat lieu(VND): ");
-                        int cost = sc.nextInt();
+                        createNewMaterial result = getCreateNewMaterial();
                         System.out.print("Nhap so luong(kg): ");
                         double quantity = sc.nextDouble();
-
-                        Material m = new CrispyFlour(id, name, manufacturingDate, cost, quantity);
+                        Material m = new CrispyFlour(result.id, result.name, result.manufacturingDate, result.cost, quantity);
                         list.add(m);
                     } else if (input.equals("M")){
-                        System.out.print("Nhap ma vat lieu: ");
-                        String id = sc.nextLine();
-                        System.out.print("Nhap ten vat lieu: ");
-                        String name = sc.nextLine();
-                        System.out.print("Nhap ngay san xuat: ");
-                        int day = sc.nextInt();
-                        System.out.print("Nhap thang san xuat: ");
-                        int month = sc.nextInt();
-                        System.out.print("Nhap nam san xuat: ");
-                        int year = sc.nextInt();
-                        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
-                        System.out.print("Nhap gia vat lieu(VND): ");
-                        int cost = sc.nextInt();
+                        createNewMaterial result = getCreateNewMaterial();
                         System.out.print("Nhap so luong(kg): ");
                         double weight = sc.nextDouble();
-
-                        Material m = new Meat(id, name, manufacturingDate, cost, weight);
+                        Material m = new Meat(result.id, result.name, result.manufacturingDate, result.cost, weight);
                         list.add(m);
                     }else {
                         System.out.println("Nhap sai. Moi nhap lai");
@@ -97,8 +48,24 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.print("Danh sach vat lie hien co: ");
-                    showList(list);
+                    System.out.print("Nhap ma vat lieu can sua: ");
+                    Scanner sc2 = new Scanner(System.in);
+                    String id2 = sc2.nextLine();
+                    for (Material m: list){
+                        if (m.getId().equals(id2)){
+                            if (m instanceof CrispyFlour){
+                                editMaterial(m);
+                                System.out.print("Sua so luong(kg): ");
+                                double quantity = sc2.nextDouble();
+                                ((CrispyFlour) m).setQuantity(quantity);
+                            } else {
+                                editMaterial(m);
+                                System.out.print("Sua so luong(kg): ");
+                                double weight = sc2.nextDouble();
+                                ((Meat) m).setWeight(weight);
+                            }
+                        }
+                    }
                     break;
                 case 3:
                     System.out.print("Nhap ma vat lieu can xoa: ");
@@ -136,6 +103,60 @@ public class Main {
                 case 0:
                     System.exit(0);
             }
+        }
+    }
+
+    private static void editMaterial(Material m) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Sua ma vat lieu: ");
+        String id = sc.nextLine();
+        m.setId(id);
+        System.out.print("Sua ten vat lieu: ");
+        String name = sc.nextLine();
+        m.setName(name);
+        System.out.print("Sua ngay san xuat: ");
+        int day = sc.nextInt();
+        System.out.print("Sua thang san xuat: ");
+        int month = sc.nextInt();
+        System.out.print("Sua nam san xuat: ");
+        int year = sc.nextInt();
+        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
+        m.setManufacturingDate(manufacturingDate);
+        System.out.print("Sua gia vat lieu(VND): ");
+        int cost = sc.nextInt();
+        m.setCost(cost);
+    }
+
+    private static createNewMaterial getCreateNewMaterial() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhap ma vat lieu: ");
+        String id = sc.nextLine();
+        System.out.print("Nhap ten vat lieu: ");
+        String name = sc.nextLine();
+        System.out.print("Nhap ngay san xuat: ");
+        int day = sc.nextInt();
+        System.out.print("Nhap thang san xuat: ");
+        int month = sc.nextInt();
+        System.out.print("Nhap nam san xuat: ");
+        int year = sc.nextInt();
+        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
+        System.out.print("Nhap gia vat lieu(VND): ");
+        int cost = sc.nextInt();
+        createNewMaterial result = new createNewMaterial(id, name, manufacturingDate, cost);
+        return result;
+    }
+
+    private static class createNewMaterial {
+        public final String id;
+        public final String name;
+        public final LocalDate manufacturingDate;
+        public final int cost;
+
+        public createNewMaterial(String id, String name, LocalDate manufacturingDate, int cost) {
+            this.id = id;
+            this.name = name;
+            this.manufacturingDate = manufacturingDate;
+            this.cost = cost;
         }
     }
 

@@ -1,8 +1,9 @@
 package src;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CrispyFlour extends Material implements Discount{
+public class CrispyFlour extends Material implements Discount, Serializable {
 
     public static final int EXP_YEAR_OF_FLOUR = 1;
     public static final int EXP_MONTH_TO_APPLY_DISCOUNT40 = 2;

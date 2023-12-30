@@ -1,5 +1,6 @@
 import src.CrispyFlour;
 import src.Material;
+import src.MaterialManager;
 import src.Meat;
 
 import java.time.LocalDate;
@@ -7,7 +8,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Material> list = new ArrayList<>();
+        List<Material> list = new ArrayList<>();
         int choice = -1;
         Scanner in = new Scanner(System.in);
 
@@ -24,108 +25,92 @@ public class Main {
             System.out.println("0. Exit");
             System.out.print("NHAP LUA CHON CUA BAN: ");
             choice = in.nextInt();
+            MaterialManager manager = new MaterialManager();
+
 
             switch (choice){
                 case 1:
                     System.out.print("Nhap vat lieu can them  <F> flour hay <M> meat: ");
-                    Scanner sc = new Scanner(System.in);
-                    String input = sc.nextLine();
+                    String input = manager.stringInput();
+                    Material newMaterial = null;
+                    list = manager.readData("data.txt");
                     if (input.equals("F")){
-                        createNewMaterial result = getCreateNewMaterial();
-                        System.out.print("Nhap so luong(kg): ");
-                        double quantity = sc.nextDouble();
-                        Material m = new CrispyFlour(result.id, result.name, result.manufacturingDate, result.cost, quantity);
-                        list.add(m);
+                        newMaterial = manager.createNewCrispyFlour();
                     } else if (input.equals("M")){
-                        createNewMaterial result = getCreateNewMaterial();
-                        System.out.print("Nhap so luong(kg): ");
-                        double weight = sc.nextDouble();
-                        Material m = new Meat(result.id, result.name, result.manufacturingDate, result.cost, weight);
-                        list.add(m);
+                        newMaterial = manager.createNewMeat();
                     }else {
                         System.out.println("Nhap sai. Moi nhap lai");
                         break;
                     }
+                    boolean check = true;
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getId().equals(newMaterial.getId())){
+                            check = false;
+                        }
+                    }
+                    if (check){
+                        list.add(newMaterial);
+                        manager.writeData("data.txt",list);
+                    } else {
+                        System.out.println("ID BI TRUNG VOI SAN PHAM DA CO. MOI NHAP LAI!!!");
+                    }
                     break;
                 case 2:
                     System.out.print("Nhap ma vat lieu can sua: ");
-                    Scanner sc2 = new Scanner(System.in);
-                    String id2 = sc2.nextLine();
-                    for (Material m: list){
-                        if (m.getId().equals(id2)){
-                            if (m instanceof CrispyFlour){
-                                editMaterial(m);
-                                System.out.print("Sua so luong(kg): ");
-                                double quantity = sc2.nextDouble();
-                                ((CrispyFlour) m).setQuantity(quantity);
-                            } else {
-                                editMaterial(m);
-                                System.out.print("Sua so luong(kg): ");
-                                double weight = sc2.nextDouble();
-                                ((Meat) m).setWeight(weight);
+                    String idTemp = manager.stringInput();
+                    list = manager.readData("data.txt");
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getId().equals(idTemp)){
+                            Material materialTemp = list.get(i);
+                            if (materialTemp instanceof CrispyFlour){
+                                manager.editMaterialFlour((CrispyFlour) materialTemp);
+                            }else if (materialTemp instanceof Meat){
+                                manager.editMaterialMeat((Meat) materialTemp);
                             }
+                            manager.writeData("data.txt",list);
                         }
                     }
                     break;
                 case 3:
                     System.out.print("Nhap ma vat lieu can xoa: ");
-                    Scanner sc3 = new Scanner(System.in);
-                    String id = sc3.nextLine();
-                    for (Material m: list){
-                        if (m.getId().equals(id)){
-                            boolean isRemoved = list.remove(m);
-                            if (isRemoved){
-                                System.out.println("xoa thanh cong!");
-                            } else {
-                                System.out.println("Chua xoa duoc!");
-                            }
+                    String idTemp3 = manager.stringInput();
+                    list = manager.readData("data.txt");
+
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getId().equals(idTemp3)){
+                            list.remove(list.get(i));
+                            System.out.println("xoa thanh cong!");
                         }
                     }
+                    manager.writeData("data.txt",list);
                     break;
                 case 4:
-                    System.out.println("Danh sach vat lie hien co: ");
-                    showList(list);
+                    System.out.println("Danh sach vat lieu hien co: ");
+                    MaterialManager manager4 = new MaterialManager();
+                    list = manager4.readData("data.txt");
+                    showList((ArrayList<Material>) list);
                     break;
-                case 5:
-                    System.out.print("Tong tien cac vat lieu da gom chiet khau la: ");
-                    System.out.printf("%.3f \n",getSumCostApplyDiscount(list));
-                    break;
-                case 6:
-                    System.out.println("Sap xep vat lieu theo gia ");
-                    arrangeListByCost(list);
-                    showList(list);
-                    break;
-                case 7:
-                    System.out.printf("%-50s%15.3f\n","Tong tien vat lieu khong tinh chiet khau hom nay: ",getSumCostNoDiscount(list));
-                    System.out.printf("%-50s%15.3f\n","Tong tien vat lieu co chiet khau hom nay: ",getSumCostApplyDiscount(list));
-                    System.out.printf("%-50s%15.3f\n","Chenh lech: ",getSumCostNoDiscount(list)-getSumCostApplyDiscount(list));
-                    break;
+//                case 5:
+//                    System.out.print("Tong tien cac vat lieu da gom chiet khau la: ");
+//                    System.out.printf("%.3f \n",getSumCostApplyDiscount(list));
+//                    break;
+//                case 6:
+//                    System.out.println("Sap xep vat lieu theo gia ");
+//                    arrangeListByCost(list);
+//                    showList(list);
+//                    break;
+//                case 7:
+//                    System.out.printf("%-50s%15.3f\n","Tong tien vat lieu khong tinh chiet khau hom nay: ",getSumCostNoDiscount(list));
+//                    System.out.printf("%-50s%15.3f\n","Tong tien vat lieu co chiet khau hom nay: ",getSumCostApplyDiscount(list));
+//                    System.out.printf("%-50s%15.3f\n","Chenh lech: ",getSumCostNoDiscount(list)-getSumCostApplyDiscount(list));
+//                    break;
                 case 0:
                     System.exit(0);
             }
         }
     }
 
-    private static void editMaterial(Material m) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Sua ma vat lieu: ");
-        String id = sc.nextLine();
-        m.setId(id);
-        System.out.print("Sua ten vat lieu: ");
-        String name = sc.nextLine();
-        m.setName(name);
-        System.out.print("Sua ngay san xuat: ");
-        int day = sc.nextInt();
-        System.out.print("Sua thang san xuat: ");
-        int month = sc.nextInt();
-        System.out.print("Sua nam san xuat: ");
-        int year = sc.nextInt();
-        LocalDate manufacturingDate  = LocalDate.of(year, month ,day);
-        m.setManufacturingDate(manufacturingDate);
-        System.out.print("Sua gia vat lieu(VND): ");
-        int cost = sc.nextInt();
-        m.setCost(cost);
-    }
+
 
     private static createNewMaterial getCreateNewMaterial() {
         Scanner sc = new Scanner(System.in);

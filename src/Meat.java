@@ -1,8 +1,9 @@
 package src;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Meat extends Material implements Discount{
+public class Meat extends Material implements Discount, Serializable {
     public static final int EXP_DAY_OF_MEAT = 7;
     public static final int EXP_DAYS_TO_APPLY_DISCOUNT30 = 5;
     double weight;

@@ -1,8 +1,9 @@
 package src;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Material{
+public abstract class Material implements Serializable {
     String id;
     String name;
     LocalDate manufacturingDate;

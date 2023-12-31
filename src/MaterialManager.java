@@ -2,9 +2,7 @@ package src;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class MaterialManager {
     public int intInput(){
@@ -18,6 +16,41 @@ public class MaterialManager {
     public String stringInput(){
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
+    }
+    public double getSumCostNoDiscount(List<Material> list) {
+        double totalCost = 0;
+        for (Material e: list){
+            totalCost += e.getAmount();
+        }
+        return totalCost;
+    }
+    public void sortListByCost(List<Material> list) {
+        Comparator<Material> comparator = new Comparator<Material>() {
+            @Override
+            public int compare(Material o1, Material o2) {
+                return (o1.getCost()-o2.getCost());
+            }
+        };
+        Collections.sort(list,comparator);
+    }
+    public double getSumCostApplyDiscount(List<Material> list) {
+        double total = 0;
+        for (Material e: list){
+            if (e instanceof CrispyFlour){
+                CrispyFlour flours = (CrispyFlour) e;
+                total += flours.getRealMoney();
+            }
+            if (e instanceof Meat){
+                Meat meats = (Meat) e;
+                total += meats.getRealMoney();
+            }
+        }
+        return total;
+    }
+    public void showList(List<Material> list) {
+        for (Material material: list){
+            System.out.println(material);
+        }
     }
     public void editMaterialFlour(CrispyFlour m) {
         System.out.print("Sua ma vat lieu: ");
@@ -82,8 +115,7 @@ public class MaterialManager {
         int cost = intInput();
         System.out.print("Nhap so luong(kg): ");
         double weight = doubleInput();
-        Material result = new Meat(id, name, manufacturingDate, cost,weight);
-        return result;
+        return new Meat(id, name, manufacturingDate, cost,weight);
     }
     public Material createNewCrispyFlour(){
         System.out.print("Nhap ma vat lieu: ");
@@ -101,8 +133,7 @@ public class MaterialManager {
         int cost = intInput();
         System.out.print("Nhap so luong(kg): ");
         double quantity = doubleInput();
-        Material result = new CrispyFlour(id, name, manufacturingDate, cost, quantity);
-        return result;
+        return new CrispyFlour(id, name, manufacturingDate, cost, quantity);
     }
     public List<Material> readData(String path){
         FileInputStream file = null;
